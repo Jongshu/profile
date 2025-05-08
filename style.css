@@ -1,0 +1,266 @@
+.greeting {
+    font-size: 1.4rem;
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-weight: 500;
+    color: var(--text);
+    /* 테마에 맞는 색상 유지 */
+    opacity: 0.8;
+    text-align: center;
+    /* 중앙 정렬 */
+    margin-right: 15px;
+    /* 오른쪽에서 20px 떨어지게 */
+}
+
+.emoji {
+    display: inline-block;
+    /* 위치 살짝 조절 */
+    margin-right: 6px;
+}
+
+:root {
+    --bg: #121212;
+    /* 다크 모드 기본 배경 */
+    --text: #f0f0f0;
+    /* 다크 모드 기본 텍스트 */
+    --box: #1e1e1e;
+    /* 다크 모드 박스 색 */
+    --icon-color: #ffda46;
+    /* 아이콘 색상 (노란색) */
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+header,
+section {
+    background-color: var(--box);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+header img {
+    width: 120px;
+    height: 120px;
+    border-radius: 35%;
+    margin-bottom: 10px;
+    overflow: hidden;
+    object-fit: cover;
+    object-position: top center;
+    transform-origin: 50% 0%;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.social-icons {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.social-icons a {
+    font-size: 28px;
+    color: var(--text);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.social-icons a:hover {
+    transform: scale(1.2);
+    color: #007bff;
+}
+
+/* 다크/라이트 모드 아이콘 */
+.toggle-btn {
+    align-self: flex-start;
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    color: var(--text);
+    color: var(--icon-color);
+}
+
+/* 아이콘 회전 애니메이션 */
+.toggle-btn i {
+    transition: transform 0.8s ease;
+}
+
+.toggle-btn:hover i {
+    transform: rotate(360deg);
+}
+
+/* 라이트 모드 설정 */
+body.light {
+    --bg: #fff8f0;
+    --text: #222222;
+    --box: #dfdbdba4;
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 1000;
+    /* 다른 요소들 위에 오도록 z-index 추가 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* 배경을 어두운 색으로 */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal img {
+    max-width: 90%;
+    max-height: 90%;
+    display: block;
+    /* 이미지 가운데 정렬을 위해 추가 */
+    margin: auto;
+    /* 이미지 가운데 정렬을 위해 추가 */
+}
+
+.modal.active {
+    display: flex;
+    /* 모달을 활성화하면 표시 */
+}
+
+/* 닫기 버튼 스타일 추가 */
+.close-modal-btn {
+    position: absolute;
+    top: 30px;
+    right: 550px;
+    color: #f0f0f0;
+    /* 다크 모드 텍스트 색상 또는 원하는 색상 */
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-modal-btn:hover,
+.close-modal-btn:focus {
+    color: #bbb;
+    /* 호버 시 색상 변경 */
+    text-decoration: none;
+}
+
+body.light .close-modal-btn {
+    /* 라이트 모드 시 닫기 버튼 색상 */
+    color: #f0f0f0;
+}
+
+body.light .close-modal-btn:hover,
+body.light .close-modal-btn:focus {
+    color: #bbb;
+}
+
+/* 토글 버튼 */
+.easter-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 999;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.easter-toggle-btn:hover {
+    opacity: 0.8;
+}
+
+/* 이스터에그 입력 UI */
+.easter-egg-container {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: var(--box);
+    padding: 15px;
+    border-radius: 10px;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.easter-egg-container input {
+    padding: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.easter-egg-container button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.easter-egg-container p {
+    margin-top: 10px;
+    color: var(--text);
+}
+
+.easter-egg-container {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 1.0s ease, opacity 0.5s ease;
+    display: block;
+}
+
+/* 표시될 때 스타일 */
+.easter-egg-container.active {
+    max-height: 200px;
+    /* 예상 최대 높이 */
+    opacity: 1;
+}
+
+
+@media (max-width: 600px) {
+
+    header,
+    section {
+        padding: 15px;
+    }
+
+    header img {
+        width: 100px;
+        height: 100px;
+    }
+
+    body {
+        font-size: 16px;
+    }
+}
