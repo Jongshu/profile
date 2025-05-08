@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nedier</title>
+    <link rel="icon" type="image/svg+xml"
+        href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><text x="0" y="105" font-size="110">🌟</text></svg>'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        .greeting {
+            font-size: 1.4rem;
+            margin-top: 20px;
+            margin-bottom: 0;
+            font-weight: 500;
+            color: var(--text);
+            /* 테마에 맞는 색상 유지 */
+            opacity: 0.8;
+            text-align: center;
+            /* 중앙 정렬 */
+            margin-right: 15px;
+            /* 오른쪽에서 20px 떨어지게 */
+        }
+
+        .emoji {
+            display: inline-block;
+            /* 위치 살짝 조절 */
+            margin-right: 6px;
+        }
+
+        :root {
+            --bg: #121212;
+            /* 다크 모드 기본 배경 */
+            --text: #f0f0f0;
+            /* 다크 모드 기본 텍스트 */
+            --box: #1e1e1e;
+            /* 다크 모드 박스 색 */
+            --icon-color: #ffda46;
+            /* 아이콘 색상 (노란색) */
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header,
+        section {
+            background-color: var(--box);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        header img {
+            width: 120px;
+            height: 120px;
+            border-radius: 35%;
+            margin-bottom: 10px;
+            overflow: hidden;
+            object-fit: cover;
+            object-position: top center;
+            transform-origin: 50% 0%;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .social-icons a {
+            font-size: 28px;
+            color: var(--text);
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.2);
+            color: #007bff;
+        }
+
+        /* 다크/라이트 모드 아이콘 */
+        .toggle-btn {
+            align-self: flex-start;
+            margin-bottom: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 30px;
+            color: var(--text);
+            color: var(--icon-color);
+        }
+
+        /* 아이콘 회전 애니메이션 */
+        .toggle-btn i {
+            transition: transform 0.8s ease;
+        }
+
+        .toggle-btn:hover i {
+            transform: rotate(360deg);
+        }
+
+        /* 라이트 모드 설정 */
+        body.light {
+            --bg: #fff8f0;
+            --text: #222222;
+            --box: #dfdbdba4;
+        }
+
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            /* 기본적으로 숨김 */
+            position: fixed;
+            z-index: 1000;
+            /* 다른 요소들 위에 오도록 z-index 추가 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            /* 배경을 어두운 색으로 */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            display: block;
+            /* 이미지 가운데 정렬을 위해 추가 */
+            margin: auto;
+            /* 이미지 가운데 정렬을 위해 추가 */
+        }
+
+        .modal.active {
+            display: flex;
+            /* 모달을 활성화하면 표시 */
+        }
+
+        /* 닫기 버튼 스타일 추가 */
+        .close-modal-btn {
+            position: absolute;
+            top: 30px;
+            right: 550px;
+            color: #f0f0f0;
+            /* 다크 모드 텍스트 색상 또는 원하는 색상 */
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close-modal-btn:hover,
+        .close-modal-btn:focus {
+            color: #bbb;
+            /* 호버 시 색상 변경 */
+            text-decoration: none;
+        }
+
+        body.light .close-modal-btn {
+            /* 라이트 모드 시 닫기 버튼 색상 */
+            color: #f0f0f0;
+        }
+
+        body.light .close-modal-btn:hover,
+        body.light .close-modal-btn:focus {
+            color: #bbb;
+        }
+
+        /* 토글 버튼 */
+        .easter-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        .easter-toggle-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* 이스터에그 입력 UI */
+        .easter-egg-container {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: var(--box);
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .easter-egg-container input {
+            padding: 5px;
+            margin-right: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .easter-egg-container button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .easter-egg-container p {
+            margin-top: 10px;
+            color: var(--text);
+        }
+
+        .easter-egg-container {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 1.0s ease, opacity 0.5s ease;
+            display: block;
+        }
+
+        /* 표시될 때 스타일 */
+        .easter-egg-container.active {
+            max-height: 200px;
+            /* 예상 최대 높이 */
+            opacity: 1;
+        }
+
+
+        @media (max-width: 600px) {
+
+            header,
+            section {
+                padding: 15px;
+            }
+
+            header img {
+                width: 100px;
+                height: 100px;
+            }
+
+            body {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <button id="mode-toggle" class="toggle-btn" onclick="toggleMode()" aria-label="모드 전환">
+            <i id="mode-icon" class="fas fa-moon"></i> </button>
+
+        <header>
+            <img src="https://pbs.twimg.com/media/Gm5B6IxbsAAOsuz?format=jpg&name=4096x4096" alt="프로필 사진"
+                id="profile-img">
+
+            <h1>네디어</h1>
+            <p class="greeting">
+                <span class="emoji">👋</span>안녕하세요!
+            </p>
+
+
+            <p>Minecraft Plugin Developer</p>
+
+            <div class="social-icons">
+                <a href="mailto:undefined" target="_blank" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://github.com/nedier" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="http://discord.com/users/563643101797810176" target="_blank" aria-label="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/UCXkwEfEkgfDyojs_oJzT5wg" target="_blank" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://twitter.com/HyShuya" target="_blank" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.pixiv.net/users/80905682" target="_blank" aria-label="Pixiv">
+                    <i class="fa-brands fa-pixiv"></i>
+                </a>
+            </div>
+        </header>
+
+        <section>
+            <h2>자기소개</h2>
+            <p>
+                저는 파이썬과 웹 개발을 공부 중인 개발자, 일러스트레이터 지?망생입니다.<br>
+                Python, JavaScript, HTML/CSS, Java를 공부하고 있습니다다.<br>
+            </p>
+            <p>
+                취미는 음악 듣기, 영화 감상, 게임, 드로잉 입니다.<br>
+                by- 제미나이
+            </p>
+        </section>
+
+        <section>
+            <h2>보유 기술</h2>
+            <ul>
+                <li>HTML / CSS / JavaScript</li>
+                <li>Python (Django, Flask)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>소프트웨어</h2>
+            <ul>
+                <li>ClipST</li>
+                <li>Premiere Pro, AfterFX</li>
+                <li>VSCode, IntelliJ</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>무제</h2>
+            <p>undefined</p>
+        </section>
+
+        <section>
+            <h2>무제</h2>
+            <p>undefined</p>
+        </section>
+    </div>
+
+    <div id="modal" class="modal">
+        <span class="close-modal-btn" id="close-modal-btn">&times;</span> <img src="https://via.placeholder.com/120"
+            alt="원본 프로필 사진">
+    </div>
+
+    <div class="easter-egg-container" id="easter-egg-container">
+        <input type="text" id="easter-input" placeholder="단어를 입력하세요..." />
+        <button onclick="checkEasterEgg()">확인</button>
+        <p id="easter-message"></p>
+        <a id="secret-link" href="https://discord.gg/PpXcuxTuMp" target="_blank"
+            style="display: none; margin-top: 10px; color: #00ff99; font-weight: bold;">
+            👉 이 링크를 눌러보세요! → 🔗
+        </a>
+    </div>
+
+    <button id="easter-toggle-btn" class="easter-toggle-btn" aria-label="이스터에그 열기">🐣</button>
+
+    <script>
+        // 다크/라이트 모드 전환
+        function toggleMode() {
+            document.body.classList.toggle('light');
+            const icon = document.getElementById("mode-icon");
+            const isLight = document.body.classList.contains("light");
+            icon.classList.remove("fa-moon", "fa-sun");
+            icon.classList.add(isLight ? "fa-sun" : "fa-moon");
+        }
+
+        // 프로필 사진 클릭 시 모달 띄우기
+        const profileImg = document.getElementById("profile-img");
+        const modal = document.getElementById("modal");
+        const modalImg = modal.querySelector("img");
+        const closeModalBtn = document.getElementById("close-modal-btn"); // 닫기 버튼 참조
+
+        profileImg.addEventListener("click", function () {
+            modal.classList.add("active"); // 모달 창 활성화
+            modalImg.src = profileImg.src; // 프로필 이미지 원본 크기로 변경
+        });
+
+        // 닫기 버튼 클릭 시 모달 닫기
+        closeModalBtn.addEventListener("click", function () {
+            modal.classList.remove("active"); // 모달 창 비활성화
+        });
+
+        // 모달 배경 클릭 시 닫기 (이미지 클릭 시 닫히지 않도록 수정)
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) { // 클릭된 요소가 모달 배경 자체인지 확인
+                modal.classList.remove("active"); // 모달 창 비활성화
+            }
+        });
+    </script>
+
+    <script>
+        const toggleBtn = document.getElementById('easter-toggle-btn');
+        const eggContainer = document.getElementById('easter-egg-container');
+        const messageBox = document.getElementById('easter-message');
+
+        toggleBtn.addEventListener('click', () => {
+            eggContainer.classList.toggle('active');
+        });
+
+        function checkEasterEgg() {
+            const input = document.getElementById('easter-input').value.trim().toLowerCase();
+            const messageBox = document.getElementById('easter-message');
+            const secretLink = document.getElementById('secret-link');
+
+            if (input === 'nedier') {
+                messageBox.innerHTML = '🎉 축하합니다! 이스터에그를 찾았어요!';
+                secretLink.style.display = 'inline-block';
+
+                // Confetti 효과 실행
+                if (typeof confetti === "function") {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                }
+            } else {
+                messageBox.innerHTML = '❌ 힌트: N';
+                secretLink.style.display = 'none';
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
